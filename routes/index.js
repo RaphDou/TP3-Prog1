@@ -2,28 +2,28 @@
 
 const express = require('express');
 const router = express.Router();
-const articlesController = require('../controllers/articlesController');
+const productsController = require('../controllers/productsController');
 // isAuth est un middleware qui vérifie si l'utilisateur est authentifié
 const isAuth = require('../middleware/is-auth');
 
 
-// /articles => GET
-router.get('/articles', articlesController.getArticles);
+// /products => GET
+router.get('/products', productsController.getProducts);
 
-// /article/articleId => GET
-router.get('/articles/:articleId', articlesController.getArticle);
+// /product/productId => GET
+router.get('/products/:productId', productsController.getProduct);
 
 // On ajoute le middleware isAuth pour vérifier si l'utilisateur est authentifié
-// Pour pouvoir ajouer, modifier ou supprimer un article, il faut être authentifié
+// Pour pouvoir ajouer, modifier ou supprimer un product, il faut être authentifié
 
-// /articles => POST
-router.post('/articles', isAuth, articlesController.createArticle);
+// /products => POST
+router.post('/products', isAuth, productsController.createProduct);
 
-// /articles => PUT
-router.put('/articles/:articleId', isAuth, articlesController.updateArticle);
+// /products => PUT
+router.put('/products/:productId', isAuth, productsController.updateProduct);
 
-// /articles/:articleId => DELETE
-router.delete('/articles/:articleId', isAuth, articlesController.deleteArticle);
+// /products/:productId => DELETE
+router.delete('/products/:productId', isAuth, productsController.deleteProduct);
 
 // Export des routes pour utilisation dans app.js
 module.exports = router;

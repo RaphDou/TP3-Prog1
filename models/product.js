@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const articleSchema = new Schema(
+const productSchema = new Schema(
   {
     title: {
       type: String,
@@ -9,8 +9,8 @@ const articleSchema = new Schema(
     },
     desc: {
       type: String,
-      required: [true, "L'article est requis"],
-      minlength: [10, "L'article doit contenir au moins 10 caractères"]
+      required: [true, "Le produit est requis"],
+      minlength: [10, "Le produit doit contenir au moins 10 caractères"]
     },
     image: {
       type: String,
@@ -26,4 +26,4 @@ const articleSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Article', articleSchema);
+module.exports = mongoose.model('Product', productSchema);
