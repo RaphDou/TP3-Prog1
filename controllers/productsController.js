@@ -5,7 +5,7 @@ const Product = require('../models/product');
 
 
 // Utilise la méthode find() afin de récupérer tous les products
-exports.getProducts = (_req, res, _next) => {
+exports.getProducts = (req, res, next) => {
   Product.find()
   .then(products => {
     res.status(200).json({
@@ -21,7 +21,7 @@ exports.getProducts = (_req, res, _next) => {
 };
 
 // Récupère un product grâce à son id
-exports.getProduct = (req, res, _next) => {
+exports.getProduct = (req, res, next) => {
   const productId = req.params.productId;
   Product.findById(productId)
   .then(product => {
@@ -41,7 +41,7 @@ exports.getProduct = (req, res, _next) => {
 };
 
 
-exports.createProduct = (req, res, _next) => {
+exports.createProduct = (req, res, next) => {
   const { title, desc, image } = req.body
 
   const product = new Product({
@@ -68,53 +68,34 @@ exports.createProduct = (req, res, _next) => {
 }
 
 exports.updateProduct = (req, res, next) => {
-  const productId = req.params.productId;
-  const { title, desc, image } = req.body;
-
+  const { title, desc, image } = req.body
+  const productId = req.params.productId
+  console.log('title', title)
   Product.findById(productId)
-    .then(product => {
-      if (!product) {
-        const error = new Error('Product non trouvé');
-        error.statusCode = 404;
-        throw error;
-      }
-
-      product.title = title;
-      product.desc = desc;
-      product.image = image;
-
-      return product.save();
-    })
-    .then(result => {
-      res.status(200).json({
-        message: 'Product mis à jour avec succès',
-        product: result
-      });
-    })
-    .catch(err => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
-};
-
+  .then(product => {
+    product.title = title;
+    product.desc = desc;
+    product.image = image;
+    return product.save()
+  })
+  .then( result => {
+    res.status(200).json(result)
+  })
+  .catch(err => {
+    next(err)
+  })
+}
 
 
 exports.deleteProduct = (req, res, next) => {
-  const productId = req.params.productId;
+const productId = req.params.productId
 
-  Product.findByIdAndRemove(productId)
-    .then(() => {
-      res.status(204).json({
-        message: 'Product supprimé avec succès'
-      });
-    })
-    .catch(err => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
-};
+Product.findByIdAndRemove(productId)
+  .then(_ => {
+    res.status(204).send()
+  })
+  .catch(err => {
+    next(err)
+  })
+}
 

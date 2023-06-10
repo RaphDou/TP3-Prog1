@@ -9,8 +9,8 @@ const productSchema = new Schema(
     },
     desc: {
       type: String,
-      required: [true, "Le produit est requis"],
-      minlength: [10, "Le produit doit contenir au moins 10 caractères"]
+      required: [true, "L'product est requis"],
+      minlength: [10, "L'product doit contenir au moins 10 caractères"]
     },
     image: {
       type: String,
@@ -26,4 +26,4 @@ const productSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Product', productSchema);
+module.exports = mongoose.model('Article', productSchema);
