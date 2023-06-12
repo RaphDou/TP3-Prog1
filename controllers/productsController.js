@@ -1,101 +1,180 @@
-"use strict";
+'use strict';
 
-// Récupère le modèle Product
 const Product = require('../models/product');
 
-
-// Utilise la méthode find() afin de récupérer tous les products
 exports.getProducts = (req, res, next) => {
   Product.find()
-  .then(products => {
-    res.status(200).json({
-      products: products,
-      pageTitle: 'Accueil'
+    .select('-email -password')
+    .then(products => {
+      res.status(200).json({
+        products: products.map(product => ({
+          _id: product._id,
+          title: product.title,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          categoryId: product.categoryId,
+          userId: product.userId,
+          isSold: product.isSold
+        })),
+        pageTitle: 'Accueil'
+      });
+    })
+    .catch(err => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
     });
-  })
-  .catch(err => {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-  });
 };
 
-// Récupère un product grâce à son id
 exports.getProduct = (req, res, next) => {
   const productId = req.params.productId;
   Product.findById(productId)
-  .then(product => {
-    if (!product) {
-      res.status(404).send();
-    }
-    res.status(200).json({
-      product: product,
-      pageTitle: 'Product'
+    .select('-email -password')
+    .then(product => {
+      if (!product) {
+        res.status(404).send();
+      }
+      res.status(200).json({
+        product: {
+          _id: product._id,
+          title: product.title,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          categoryId: product.categoryId,
+          userId: product.userId,
+          isSold: product.isSold
+        },
+        pageTitle: 'Product'
+      });
+    })
+    .catch(err => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
     });
-  })
-  .catch(err => {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-  });
 };
 
-
 exports.createProduct = (req, res, next) => {
-  const { title, desc, image } = req.body
+  const { title, description, price, imageUrl, categoryId } = req.body;
 
   const product = new Product({
     title: title,
-    desc: desc,
-    image: image,
+    description: description,
+    price: price,
+    imageUrl: imageUrl,
+    categoryId: categoryId,
     userId: req.user.userId
   });
 
-  product.save()
+  product
+    .save()
     .then(result => {
       res.status(201).json({
-        message: "Product créé avec succès",
-        product: result
-      })
+        message: 'Votre produit à bien été créé! :D',
+        product: {
+          _id: _id,
+          title: title,
+          description: description,
+          price: price,
+          imageUrl: imageUrl,
+          categoryId: categoryId,
+          userId: userId,
+          isSold: isSold
+        }
+      });
     })
     .catch(err => {
-      return res.status(422).json({
-        errorMessage: err.errors
-      })
-    })
-
-
-}
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
 
 exports.updateProduct = (req, res, next) => {
-  const { title, desc, image } = req.body
-  const productId = req.params.productId
-  console.log('title', title)
-  Product.findById(productId)
-  .then(product => {
-    product.title = title;
-    product.desc = desc;
-    product.image = image;
-    return product.save()
-  })
-  .then( result => {
-    res.status(200).json(result)
-  })
-  .catch(err => {
-    next(err)
-  })
-}
+  const { title, description, price, imageUrl, categoryId } = req.body;
+  const productId = req.params.productId;
 
+  Product.findById(productId)
+    .then(product => {
+      if (!product) {
+        const error = new Error('Product non trouvé');
+        error.statusCode = 404;
+        throw error;
+      }
+
+      product.title = title;
+      product.description = description;
+      product.price = price;
+      product.imageUrl = imageUrl;
+      product.categoryId = categoryId;
+      return product.save();
+    })
+    .then(result => {
+      res.status(200).json({
+        _id: result._id,
+        title: result.title,
+        description: result.description,
+        price: result.price,
+        imageUrl: result.imageUrl,
+        categoryId: result.categoryId,
+        userId: result.userId,
+        isSold: result.isSold
+      });
+    })
+    .catch(err => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
 
 exports.deleteProduct = (req, res, next) => {
-const productId = req.params.productId
+  const productId = req.params.productId;
 
-Product.findByIdAndRemove(productId)
-  .then(_ => {
-    res.status(204).send()
-  })
-  .catch(err => {
-    next(err)
-  })
-}
+  Product.findByIdAndRemove(productId)
+    .then(() => {
+      res.status(204).send();
+    })
+    .catch(err => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
 
+exports.getUserProducts = (req, res, next) => {
+  const userId = req.params.userId;
+
+  Product.find({ userId: userId })
+    .select('-email -password')
+    .then(products => {
+      res.status(200).json({
+        products: products.map(product => ({
+          _id: product._id,
+          title: product.title,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          categoryId: product.categoryId,
+          userId: product.userId,
+          isSold: product.isSold
+        })),
+        pageTitle: "Produits de l'utilisateur"
+      });
+    })
+    .catch(err => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+
+module.exports = exports;

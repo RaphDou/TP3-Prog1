@@ -1,12 +1,10 @@
-"use strict";
-
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 
 /** Vérifie si la requête a un token JWT valide */
 
-module.exports = (req, res, next) => {
+function authent(req, res, next) {
   const authHeader = req.get('Authorization');
   console.log('authHeader', authHeader)
   if (!authHeader) {
@@ -29,4 +27,6 @@ module.exports = (req, res, next) => {
   req.user = decodedToken;
   console.log('decodedToken', decodedToken)
   next();
-};
+}
+
+module.exports = authent;

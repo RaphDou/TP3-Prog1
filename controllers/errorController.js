@@ -11,3 +11,4 @@ exports.get404 = (req, res) => {
     .status(404)
     .json({ pageTitle: 'Page introuvable !' });
 };
+module.exports = exports;

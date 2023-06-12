@@ -34,7 +34,7 @@ app.use(errorController.get404);
 app.use(errorController.logErrors);
 
 
-mongoose.connect('mongodb://127.0.0.1:27017/TP3')
+mongoose.connect('mongodb://127.0.0.1:27017/TP3')  //mongodb+srv://raphael120701:Pinote910@tp3.nxkeknj.mongodb.net/TP3?retryWrites=true&w=majority
   .then(() => {
     console.log('La connexion à la base de données est établie')
     app.listen(3000, () => {

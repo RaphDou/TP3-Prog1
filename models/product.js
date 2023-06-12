@@ -5,25 +5,38 @@ const productSchema = new Schema(
   {
     title: {
       type: String,
-      required: [true, "Le titre est requis !"]
+      required: [true, 'Le titre est requis !'],
+      maxlength: [50, 'Le titre ne peut pas dépasser 50 caractères']
     },
-    desc: {
+    description: {
       type: String,
-      required: [true, "L'product est requis"],
-      minlength: [10, "L'product doit contenir au moins 10 caractères"]
+      required: [true, 'La description est requise'],
+      maxlength: [255, 'La description ne peut pas dépasser 255 caractères']
     },
-    image: {
-      type: String,
-      required: [true, "L'image est requise"]
+    price: {
+      type: Number,
+      required: true
+    },
+    imageUrl: {
+      type: [String],
+      required: true
+    },
+    categoryId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Category',
+      required: true
     },
     userId: {
-      // Permet de référencer d'autres documents, provenant
-      // d'autres collections
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
+      required: true
+    },
+    isSold: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Article', productSchema);
+module.exports = mongoose.model('Product', productSchema);
