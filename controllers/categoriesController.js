@@ -3,6 +3,7 @@
 const Category = require('../models/category');
 const isAdmin = require('../middleware/isAdmin');
 
+// Fais apparaitre toutes les categories / Makes every category appear
 exports.getCategories = (_req, res, _next) => {
   Category.find()
     .then(categories => {
@@ -13,6 +14,7 @@ exports.getCategories = (_req, res, _next) => {
     });
 };
 
+//Fais apparaitre la catégorie demandé par l'id / Makes the category appear by id
 exports.getCategory = (req, res, _next) => {
   const categoryId = req.params.id;
   Category.findById(categoryId)
@@ -28,6 +30,7 @@ exports.getCategory = (req, res, _next) => {
     });
 };
 
+//creation de la catégorie / creation of a new category
 exports.createCategory = [
   isAdmin,
   async (req, res, _next) => {
@@ -44,6 +47,7 @@ exports.createCategory = [
   }
 ];
 
+//mise à jour d'une catégorie existente / updates an existing category
 exports.updateCategory = [
   isAdmin,
   async (req, res, _next) => {
@@ -65,6 +69,7 @@ exports.updateCategory = [
   }
 ];
 
+//efface une catégorie / deletes a category
 exports.deleteCategory = [
   isAdmin,
   async (req, res, _next) => {

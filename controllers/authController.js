@@ -7,6 +7,7 @@ dotenv.config();
 
 const User = require('../models/user');
 
+// connexion au compte de l'utilisateur / login into user
 exports.login = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -46,7 +47,7 @@ exports.login = (req, res, next) => {
     });
 };
 
-// Céation d'un user
+// Céation d'un utilisateur / creation of a new user
 exports.signup = (req, res, next) => {
   const { email, lastname, password, firstname, city, isAdmin } = req.body;
 

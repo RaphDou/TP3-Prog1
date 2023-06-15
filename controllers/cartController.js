@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const Product = require('../models/product');
 
-// Retourne le panier de l'utilisateur connecté
+// Retourne le panier de l'utilisateur connecté / return the cart of the logged in user
 exports.getCart = (req, res, _next) => {
   const userId = req.user.userId;
 
@@ -19,7 +19,7 @@ exports.getCart = (req, res, _next) => {
     });
 };
 
-// Ajoute un produit au panier de l'utilisateur connecté
+// Ajoute un produit au panier de l'utilisateur connecté / add a product to the logged in user
 exports.addToCart = async (req, res, _next) => {
   const userId = req.user.userId;
   const productId = req.body.productId;
@@ -57,7 +57,7 @@ exports.addToCart = async (req, res, _next) => {
   }
 };
 
-
+// Retire un produit du panier de l'utilisateur connecté / Removes a product from logged in user
 exports.removeFromCart = async (req, res, _next) => {
   const userId = req.user.userId;
   const productId = req.params.id;

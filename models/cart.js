@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+//Schéma du panier de l'utilisateur / User's cart schema
 const cartSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,

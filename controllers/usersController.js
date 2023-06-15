@@ -1,6 +1,7 @@
 const User = require('../models/user');
 
-exports.getUsers = async (req, res) => {
+//Liste des utilisateurs / Users list
+exports.getUsers = async (_req, res) => {
   try {
     const users = await User.find().select('firstname lastname email city');
     res.status(200).json(users);
@@ -10,6 +11,7 @@ exports.getUsers = async (req, res) => {
   }
 };
 
+//Cherche un seul utilisateur par id / Search one user by id
 exports.getUser = async (req, res) => {
   const { id } = req.params;
   try {
@@ -45,7 +47,8 @@ exports.getUser = async (req, res) => {
   //     });
   // };
   
-  exports.updateUser = (req, res, next) => {
+  //Mise à jour de l'utilisateur connecté / Update currently connected user
+  exports.updateUser = (req, res, _next) => {
     const userId = req.params.id;
     const { firstname, lastname, city, email, password } = req.body;
   
@@ -74,7 +77,7 @@ exports.getUser = async (req, res) => {
       });
   };
   
-
+//Efface l'tilisateur connecté / Deletes profile
 exports.deleteUser = async (req, res) => {
   const { id } = req.params;
   const { userId, isAdmin } = req.user;

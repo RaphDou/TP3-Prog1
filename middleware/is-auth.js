@@ -24,20 +24,20 @@ function authent(req, res, next) {
     throw error;
   }
 
-  // Récupérer l'utilisateur correspondant à partir de la base de données
+  // Récupérer l'utilisateur correspondant à partir de la base de données // Gets authenticated from the server
   User.findById(decodedToken.userId)
     .then(user => {
       if (!user) {
         throw new Error("Cet utilisateur n'a pas été trouvé !");
       }
 
-      // Ajouter la propriété isAdmin à l'objet decodedToken
+      // Ajouter la propriété isAdmin à l'objet decodedToken // Adds the isAdmin property to object decodedToken
       decodedToken.isAdmin = user.isAdmin;
 
-      // Définir req.userId avec l'ID de l'utilisateur
+      // Définir req.userId avec l'ID de l'utilisateur / Defines req.userId with user ID
       req.userId = decodedToken.userId;
 
-      // Passe le token décodé dans la requête pour pouvoir l'utiliser ailleurs
+      // Passe le token décodé dans la requête pour pouvoir l'utiliser ailleurs / Passes decoded token in request tfor usage
       req.user = decodedToken;
       console.log('decodedToken', decodedToken);
       next();

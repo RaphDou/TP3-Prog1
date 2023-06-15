@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+//Schema des utilisateurs / User schema
 const userSchema = new Schema(
   {
     firstname: {
