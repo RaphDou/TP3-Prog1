@@ -27,49 +27,53 @@ exports.getUser = async (req, res) => {
 
 
 // Je n'aurai pas été capable de faire cette partie pour le getUserProfil :(
-// exports.getUserProfil = async (req, res) => {
-//   const userId = req.user.userId;
-
-//   try {
-//     const user = await User.findById(userId).select('-email -password');
-//     if (user) {
-//       res.status(200).json(user);
-//     } else {
-//       res.status(404).json({ message: 'Utilisateur non trouvé' });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Erreur pendant la récupération du profil utilisateur' });
-//   }
-// };
-
-
-
-// Je n'aurai pas été capable de faire cette partie pour le updateUser :(
-// exports.updateUser = (req, res) => {
-//   const { id } = req.params;
-//   const { user } = req;
-//   const { cart, isAdmin, ...updatedData } = req.body;
-
-//   if (!user || !user._id || (user._id.toString() !== id.toString() && !user.isAdmin)) {
-//     return res.status(403).json({ message: "Vous n'avez pas la permission de modifier cet utilisateur" });
-//   }  
-
-//   User.findByIdAndUpdate(
-//     id,
-//     updatedData,
-//     { new: true, select: 'firstname lastname' }
-//   )
-//     .then(updatedUser => {
-//       res.status(200).json(updatedUser);
-//     })
-//     .catch(error => {
-//       console.log(error);
-//       res.status(500).json({ message: "Il y a eu une erreur pendant la mise à jour de l'utilisateur" });
-//     });
-// };
-
-
+  // exports.getUserProfil = (req, res) => {
+  //   const userId = req.user.userId;
+  
+  //   User.findById(userId)
+  //     .select('-email -password')
+  //     .then(user => {
+  //       if (user) {
+  //         res.status(200).json(user);
+  //       } else {
+  //         res.status(404).json({ message: 'Utilisateur non trouvé' });
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //       res.status(500).json({ message: 'Erreur lors de la récupération du profil utilisateur' });
+  //     });
+  // };
+  
+  exports.updateUser = (req, res, next) => {
+    const userId = req.params.id;
+    const { firstname, lastname, city, email, password } = req.body;
+  
+    if (req.userId !== userId) {
+      return res.status(403).json({ error: "Vous n'êtes pas autorisé à modifier cet utilisateur." });
+    }
+  
+    User.findById(userId)
+      .then(user => {
+        if (!user) {
+          return res.status(404).json({ error: "L'utilisateur demandé n'existe pas." });
+        }
+        user.password = password;
+        user.email = email;
+        user.firstname = firstname;
+        user.lastname = lastname;
+        user.city = city;
+  
+        return user.save();
+      })
+      .then(result => {
+        res.status(200).json({ message: "L'utilisateur a été mis à jour avec succès.", user: result });
+      })
+      .catch(error => {
+        res.status(500).json({ error: "Une erreur est survenue lors de la mise à jour de l'utilisateur.", error });
+      });
+  };
+  
 
 exports.deleteUser = async (req, res) => {
   const { id } = req.params;

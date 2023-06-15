@@ -38,7 +38,7 @@ app.use(errorController.get404);
 app.use(errorController.logErrors);
 
 
-mongoose.connect('mongodb+srv://raphael120701:Pinote910@tp3.nxkeknj.mongodb.net/TP3?retryWrites=true&w=majority')
+mongoose.connect('//mongodb+srv://raphael120701:Pinote910@tp3.nxkeknj.mongodb.net/TP3?retryWrites=true&w=majority')
   .then(() => {
     console.log('La connexion à la base de données est établie')
     app.listen(3000, () => {
@@ -47,7 +47,7 @@ mongoose.connect('mongodb+srv://raphael120701:Pinote910@tp3.nxkeknj.mongodb.net/
   })
   .catch(err => {
     console.log('La connexion à la base de données a échoué', err)
-  });
+  })
 
 
 

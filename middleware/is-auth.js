@@ -28,11 +28,14 @@ function authent(req, res, next) {
   User.findById(decodedToken.userId)
     .then(user => {
       if (!user) {
-        throw new Error('Cet utilisateur n\'as pas été trouvé!');
+        throw new Error("Cet utilisateur n'a pas été trouvé !");
       }
 
       // Ajouter la propriété isAdmin à l'objet decodedToken
       decodedToken.isAdmin = user.isAdmin;
+
+      // Définir req.userId avec l'ID de l'utilisateur
+      req.userId = decodedToken.userId;
 
       // Passe le token décodé dans la requête pour pouvoir l'utiliser ailleurs
       req.user = decodedToken;
@@ -41,7 +44,7 @@ function authent(req, res, next) {
     })
     .catch(error => {
       console.error(error);
-      res.status(500).json({ message: 'Erreur lors de la vérification de l\'utilisateur' });
+      res.status(500).json({ message: "Erreur lors de la vérification de l'utilisateur" });
     });
 }
 

@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const userSchema = new Schema(
   {
     firstname: {
@@ -21,9 +23,8 @@ const userSchema = new Schema(
       unique: true,
       maxlength: 50,
       validate: {
-        validator: function (value) {
-          // Ajoutez votre logique de validation du courriel ici
-          // Vous pouvez utiliser une bibliothèque comme 'validator' pour simplifier la validation
+        validator: function(value) {
+          return emailRegex.test(value);
         },
         message: 'Adresse e-mail invalide'
       }
