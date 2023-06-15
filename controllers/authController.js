@@ -26,7 +26,7 @@ exports.login = (req, res, next) => {
     })
     .then(isEqual => {
       if (!isEqual) {
-        const error = new Error('Mauvais mot de passe !');
+        const error = new Error('Mauvais mot de passe!');
         error.statusCode = 401;
         throw error;
       }
@@ -46,15 +46,20 @@ exports.login = (req, res, next) => {
     });
 };
 
-// Enregistre un utilisateur dans la bd
-// Enregistre un utilisateur dans la bd
+// Céation d'un user
 exports.signup = (req, res, next) => {
   const { email, lastname, password, firstname, city, isAdmin } = req.body;
 
-  // Utilisation de bcrypt pour hacher le mot de passe
-  bcrypt
-    .hash(password, 12)
-    .then((hashedPassword) => {
+  User.findOne({ email: email })
+    .then(existingUser => {
+      if (existingUser) {
+        const error = new Error('Un compte avec cet e-mail existe déjà, veuillez vérifier les données que vous avez entré!');
+        error.statusCode = 409;
+        throw error;
+      }
+      return bcrypt.hash(password, 12);
+    })
+    .then(hashedPassword => {
       const user = new User({
         email: email,
         lastname: lastname,
@@ -66,11 +71,12 @@ exports.signup = (req, res, next) => {
       return user.save();
     })
     .then(result => {
-      res.status(201).json({ message: "Utilisateur créé !", userId: result.id });
+      res.status(201).json({ message: "Utilisateur créé, bienvenue!", userId: result.id });
     })
     .catch(err => {
       next(err);
     });
 };
+
 
 module.exports = exports;

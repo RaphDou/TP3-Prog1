@@ -8,6 +8,16 @@ const usersController = require('../controllers/usersController');
 const isAuth = require('../middleware/is-auth');
 const cartController = require('../controllers/cartController');
 
+// Routes pour les utilisateurs
+router.get('/users', usersController.getUsers);
+router.get('/users/:id', usersController.getUser);
+
+//Ces deux routes là ne fonctionne pas, j'ai essayé plein de choses, mais j'ai pas réussi à les faire fonctionner :/
+// router.get('/users/profil', isAuth, usersController.getUserProfil);
+// router.put('/users/:id', isAuth, usersController.updateUser);
+
+
+router.delete('/users/:id', isAuth, usersController.deleteUser);
 
 // Routes pour les produits
 router.get('/products', productsController.getProducts);
@@ -23,16 +33,13 @@ router.post('/categories', isAuth, categoriesController.createCategory);
 router.put('/categories/:id', isAuth, categoriesController.updateCategory);
 router.delete('/categories/:id', isAuth, categoriesController.deleteCategory);
 
-// Routes pour les utilisateurs
-router.get('/users', usersController.getUsers);
-router.get('/users/:id', usersController.getUser);
-router.get('/users/profile', isAuth, usersController.getUserProfile);
-router.put('/users/:id', isAuth, usersController.updateUser);
-router.delete('/users/:id', isAuth, usersController.deleteUser);
-
 // Routes pour le cart
 router.get('/cart', isAuth, cartController.getCart);
 router.put('/cart', isAuth, cartController.addToCart);
 router.delete('/cart/:id', isAuth, cartController.removeFromCart);
+
+// Route pour la recherche de produits
+router.get('/search', productsController.searchProducts);
+
 
 module.exports = router;

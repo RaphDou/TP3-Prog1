@@ -3,6 +3,9 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const cors = require('cors');
+
+app.use(cors());
 
 // Importe les routes
 const indexRoutes = require('./routes/index');
@@ -13,6 +16,7 @@ const errorController = require('./controllers/errorController');
 
 // middleware pour le format JSON
 app.use(express.json()); 
+
 
 
 // Déclaration d'un parser pour analyser "le corps (body)" d'une requête entrante avec POST  
@@ -34,7 +38,7 @@ app.use(errorController.get404);
 app.use(errorController.logErrors);
 
 
-mongoose.connect('mongodb://127.0.0.1:27017/TP3')  //mongodb+srv://raphael120701:Pinote910@tp3.nxkeknj.mongodb.net/TP3?retryWrites=true&w=majority
+mongoose.connect('mongodb://127.0.0.1:27017/TP3')
   .then(() => {
     console.log('La connexion à la base de données est établie')
     app.listen(3000, () => {
