@@ -22,16 +22,16 @@ router.delete('/users/:id', isAuth, usersController.deleteUser);
 // Routes pour les produits
 router.get('/products', productsController.getProducts);
 router.get('/products/:id', productsController.getProduct);
-router.post('/products', isAuth, productsController.createProduct);
-router.delete('/products/:productId', isAuth, productsController.deleteProduct);
+router.post('/products', productsController.createProduct);
+router.delete('/products/:productId', productsController.deleteProduct);
 router.get('/products/user/:userId', isAuth, productsController.getUserProducts);
 
 // Routes pour les catégories
 router.get('/categories', categoriesController.getCategories);
 router.get('/categories/:id', categoriesController.getCategory);
-router.post('/categories', isAuth, isAdmin, categoriesController.createCategory);
-router.put('/categories/:id', isAuth, isAdmin, categoriesController.updateCategory);
-router.delete('/categories/:id', isAuth, isAdmin, categoriesController.deleteCategory);
+router.post('/categories', categoriesController.createCategory);
+router.put('/categories/:id',categoriesController.updateCategory);
+router.delete('/categories/:id',categoriesController.deleteCategory);
 
 // Routes pour le cart
 router.get('/cart', isAuth, cartController.getCart);
