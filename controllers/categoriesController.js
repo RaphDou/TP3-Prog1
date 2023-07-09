@@ -32,7 +32,6 @@ exports.getCategory = (req, res, _next) => {
 
 //creation de la catégorie / creation of a new category
 exports.createCategory = [
-  isAdmin,
   async (req, res, _next) => {
     try {
       const { name } = req.body;
@@ -49,7 +48,6 @@ exports.createCategory = [
 
 //mise à jour d'une catégorie existente / updates an existing category
 exports.updateCategory = [
-  isAdmin,
   async (req, res, _next) => {
     try {
       const categoryId = req.params.id;
@@ -71,7 +69,6 @@ exports.updateCategory = [
 
 //efface une catégorie / deletes a category
 exports.deleteCategory = [
-  isAdmin,
   async (req, res, _next) => {
     try {
       const categoryId = req.params.id;
