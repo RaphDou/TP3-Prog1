@@ -197,6 +197,46 @@ exports.getUserProducts = (req, res, next) => {
     });
 };
 
+// Mise à jour d'un produit existant / updates an existing product
+exports.updateProduct = (req, res, next) => {
+  const { title, description, price, imageUrl, categoryId } = req.body;
+  const productId = req.params.productId;
+
+  Product.findById(productId)
+    .then(product => {
+      if (!product) {
+        const error = new Error('Product non trouvé :(');
+        error.statusCode = 404;
+        throw error;
+      }
+
+      product.title = title;
+      product.description = description;
+      product.price = price;
+      product.imageUrl = imageUrl;
+      product.categoryId = categoryId;
+      return product.save();
+    })
+    .then(result => {
+      res.status(200).json({
+        _id: result._id,
+        title: result.title,
+        description: result.description,
+        price: result.price,
+        imageUrl: result.imageUrl,
+        categoryId: result.categoryId,
+        isSold: result.isSold
+      });
+    })
+    .catch(err => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+
+
 // Recherche de produits / Search products
 exports.searchProducts = (req, res, _next) => {
   const searchQuery = req.query.q;
