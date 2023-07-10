@@ -72,8 +72,7 @@ exports.createProduct = (req, res, next) => {
     description: description,
     price: priceInCents, // Enregistrer le prix en cents
     imageUrl: imageUrl,
-    categoryId: categoryId,
-    userId: 'Admin' // Assigner l'ID de l'utilisateur admin
+    categoryId: categoryId
   });
 
   product
@@ -88,7 +87,6 @@ exports.createProduct = (req, res, next) => {
           price: result.price, // Le prix sera en cents
           imageUrl: result.imageUrl,
           categoryId: result.categoryId,
-          userId: result.userId,
           isSold: result.isSold
         }
       });
@@ -100,6 +98,7 @@ exports.createProduct = (req, res, next) => {
       next(err);
     });
 };
+
 
 // Mise à jour d'un produit existant / updates an existing product
 exports.updateProduct = (req, res, next) => {
