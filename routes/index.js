@@ -25,6 +25,8 @@ router.get('/products/:id', productsController.getProduct);
 router.post('/products', productsController.createProduct);
 router.delete('/products/:productId', productsController.deleteProduct);
 router.get('/products/user/:userId', isAuth, productsController.getUserProducts);
+router.put('/products/:productId', productsController.updateProduct);
+
 
 // Routes pour les catégories
 router.get('/categories', categoriesController.getCategories);
