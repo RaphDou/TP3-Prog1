@@ -27,11 +27,6 @@ const productSchema = new Schema(
       ref: 'Category',
       required: true
     },
-    userId: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
-    },
     isSold: {
       type: Boolean,
       default: false
