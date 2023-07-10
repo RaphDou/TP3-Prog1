@@ -2,7 +2,7 @@
 
 const Product = require('../models/product');
 
-//Affiche une liste de tout les produits / List of all products
+// Affiche une liste de tous les produits / List of all products
 exports.getProducts = (_req, res, next) => {
   Product.find()
     .select('-email -password')
@@ -29,7 +29,7 @@ exports.getProducts = (_req, res, next) => {
     });
 };
 
-//Recherche d'un seul article par l'id / search of a specific product by id
+// Recherche d'un seul article par l'id / search of a specific product by id
 exports.getProduct = (req, res, next) => {
   const productId = req.params.id; // Modifier ici pour utiliser req.params.id au lieu de req.params.productId
   Product.findById(productId)
@@ -60,7 +60,7 @@ exports.getProduct = (req, res, next) => {
     });
 };
 
-//création d'un nouveau produit / Create a new product
+// Création d'un nouveau produit / Create a new product
 exports.createProduct = (req, res, next) => {
   const { title, description, price, imageUrl, categoryId } = req.body;
 
@@ -73,7 +73,7 @@ exports.createProduct = (req, res, next) => {
     price: priceInCents, // Enregistrer le prix en cents
     imageUrl: imageUrl,
     categoryId: categoryId,
-    userId: req.user.userId
+    userId: 'Admin' // Assigner l'ID de l'utilisateur admin
   });
 
   product
@@ -101,7 +101,7 @@ exports.createProduct = (req, res, next) => {
     });
 };
 
-//Mise à jour d'un produit existant / updates an existing product
+// Mise à jour d'un produit existant / updates an existing product
 exports.updateProduct = (req, res, next) => {
   const { title, description, price, imageUrl, categoryId } = req.body;
   const productId = req.params.productId;
@@ -141,7 +141,7 @@ exports.updateProduct = (req, res, next) => {
     });
 };
 
-//Efface un produit // Deletes a product
+// Efface un produit // Deletes a product
 exports.deleteProduct = (req, res, next) => {
   const productId = req.params.productId;
 
@@ -169,7 +169,7 @@ exports.deleteProduct = (req, res, next) => {
     });
 };
 
-//Prend la liste des produits d'un user / Gets the list of products of a user
+// Prend la liste des produits d'un utilisateur / Gets the list of products of a user
 exports.getUserProducts = (req, res, next) => {
   const userId = req.params.userId;
 
@@ -198,7 +198,7 @@ exports.getUserProducts = (req, res, next) => {
     });
 };
 
-//Recherche de produit / Search products
+// Recherche de produits / Search products
 exports.searchProducts = (req, res, _next) => {
   const searchQuery = req.query.q;
 
